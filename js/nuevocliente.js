@@ -30,12 +30,43 @@
         const empresa = document.querySelector('#empresa').value;
 
         if(nombre === '' || email === '' || telefono === '' || empresa === '') {
-            impimirAlerta('Todos los campos son obligatorios', 'error');
+            imprimirAlerta('Todos los campos son obligatorios', 'error');
             return;
         } 
+
+        // Crear un objeto con la informacion
+        const cliente = {
+            nombre,
+            email,
+            telefono,
+            empresa,
+            id: Date.now()
+        }
+
+        crearNuevoCliente(cliente);
     }
 
-    function impimirAlerta(mensaje, tipo) {
+    function crearNuevoCliente(cliente) {
+        const transaction = DB.transaction(['crm'], 'readwrite');
+
+        const objectStore = transaction.objectStore('crm');
+
+        objectStore.add(cliente);
+
+        transaction.onerror = function() {
+            imprimirAlerta('Hubo un error en los datos', 'error');
+        };
+
+        transaction.oncomplete = function() {
+            imprimirAlerta('El cliente se agregó Correctamente');
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        };
+    }
+
+    function imprimirAlerta(mensaje, tipo) {
         const alerta = document.querySelector('.alerta');
 
         if(!alerta) {
