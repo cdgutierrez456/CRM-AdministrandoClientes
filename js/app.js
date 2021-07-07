@@ -76,7 +76,7 @@
 
                     cursor.continue();
                 } else {
-                    console.log('No hay mas registros');
+                    console.log('...');
                 }
             }
         }
