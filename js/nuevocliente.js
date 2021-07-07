@@ -54,4 +54,16 @@
         };
     }
 
+    function conectarDB() {
+        const abrirConexion = window.indexedDB.open('crm', 1);
+    
+        abrirConexion.onerror = function() {
+            console.log('Error en conexion para edicion');
+        }
+    
+        abrirConexion.onsuccess = function() {
+            DB = abrirConexion.result;
+        }
+    }
+
 })();
